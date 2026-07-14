@@ -15,6 +15,7 @@ void main() async {
   var box = await Hive.openBox('MyBox');
 
   NotifyTasks().initNotification();
+  NotifyTasks().requestAndroidPermissions();
 
   runApp(const MyApp());
 }

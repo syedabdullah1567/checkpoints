@@ -33,6 +33,26 @@ class NotifyTasks {
     await flutterLocalNotificationsPlugin.initialize(settings: initSettings);
   }
 
+  Future<void> requestAndroidPermissions() async {
+    // Cast the generic plugin down to its native Android representation
+    final androidPlugin = flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    if (androidPlugin != null) {
+      // 1. Request permission to show banners/sounds (Android 13+)
+      final bool? allowedNotifications = await androidPlugin
+          .requestNotificationsPermission();
+      debugPrint("Notification permissions granted: $allowedNotifications");
+
+      // 2. Request permission to schedule EXACT alarms (Android 13/14+)
+      final bool? allowedExactAlarms = await androidPlugin
+          .requestExactAlarmsPermission();
+      debugPrint("Exact alarms permissions granted: $allowedExactAlarms");
+    }
+  }
+
   NotificationDetails notificationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
