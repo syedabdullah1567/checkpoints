@@ -132,7 +132,7 @@ class TimePickerBanner extends StatelessWidget {
             Text('Due Time: '),
             Expanded(
               child: Text(
-                '${currentTime.hour}:${currentTime.minute}',
+                TimeOfDay.fromDateTime(currentTime).format(context),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: colorScheme.onSecondaryContainer,
