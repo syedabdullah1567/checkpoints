@@ -12,7 +12,6 @@ class DateTimePickerBanner extends StatelessWidget {
   });
 
   Future<void> _pickDateTime(BuildContext context) async {
-    // 1. Show Date Picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: currentTime,
@@ -21,7 +20,6 @@ class DateTimePickerBanner extends StatelessWidget {
     );
 
     if (pickedDate != null) {
-      // 2. Show Time Picker
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(currentTime),
@@ -30,7 +28,6 @@ class DateTimePickerBanner extends StatelessWidget {
       print(currentTime);
 
       if (pickedTime != null) {
-        // 3. Combine and send back to the parent page
         final newDateTime = DateTime(
           pickedDate.year,
           pickedDate.month,
@@ -63,7 +60,6 @@ class DateTimePickerBanner extends StatelessWidget {
         child: Row(
           children: [
             Text('Due date: '),
-            //Icon(Icons.calendar_today, color: colorScheme.onSecondaryContainer),
             const SizedBox(width: 12),
 
             Expanded(

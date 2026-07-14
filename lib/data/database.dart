@@ -11,19 +11,19 @@ class ToDoDataBase {
 
   void createInitialDaily() {
     todoList = [
-      ['Tap on the checkbox to mark as completed', false, DateTime.now()],
-      ['Swipe left on this task', false, DateTime.now()],
-      ['Tap on this task to edit', false, DateTime.now()],
-      ['Long press on this task to move it', false, DateTime.now()],
+      ['Tap on the checkbox to mark as completed', false, DateTime.now(), 0],
+      ['Swipe left on this task', false, DateTime.now(), 0],
+      ['Tap on this task to edit', false, DateTime.now(), 0],
+      ['Long press on this task to move it', false, DateTime.now(), 0],
     ];
   }
 
   void createInitialLongTerm() {
     longTerm = [
-      ['Tap on the checkbox to mark as completed', false, DateTime.now()],
-      ['Swipe left on this task', false, DateTime.now()],
-      ['Tap on this task to edit', false, DateTime.now()],
-      ['Long press on this task to move it', false, DateTime.now()],
+      ['Tap on the checkbox to mark as completed', false, DateTime.now(), 0],
+      ['Swipe left on this task', false, DateTime.now(), 0],
+      ['Tap on this task to edit', false, DateTime.now(), 0],
+      ['Long press on this task to move it', false, DateTime.now(), 0],
     ];
   }
 
@@ -40,6 +40,6 @@ class ToDoDataBase {
   }
 
   void updateLongTerm() {
-     _myBox.put('LONGTERM', longTerm);
+    _myBox.put('LONGTERM', longTerm);
   }
 }
