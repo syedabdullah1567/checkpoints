@@ -130,7 +130,6 @@ class TimePickerBanner extends StatelessWidget {
         child: Row(
           children: [
             Text('Due Time: '),
-            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 '${currentTime.hour}:${currentTime.minute}',
