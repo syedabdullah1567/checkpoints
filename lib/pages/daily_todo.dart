@@ -38,13 +38,29 @@ class _ToDoPageState extends State<ToDoPage> {
   final _controller = TextEditingController();
 
   // Upon tapping the checkbox, this function will be called
+  // 1. Upon tapping the checkbox, handle notification scheduling/cancelling
   void checkBoxChanged(bool? value, int index) {
     setState(() {
       db.todoList[index][1] = !db.todoList[index][1];
     });
     db.updateToDo();
+
+    final bool isCompleted = db.todoList[index][1];
+    if (isCompleted) {
+      // Cancel notification if the user finished the task
+      flutterLocalNotificationsPlugin.cancel(id: index);
+    } else {
+      // Reschedule it if they unchecked it
+      scheduleTodoNotification(
+        id: index, // Use exact index
+        title: 'You have a task due',
+        body: db.todoList[index][0],
+        dueDate: db.todoList[index][2],
+      );
+    }
   }
 
+  // 2. Creating a task
   void createNewTask() {
     final DateTime freshCurrentTime = DateTime(
       DateTime.now().year,
@@ -66,9 +82,16 @@ class _ToDoPageState extends State<ToDoPage> {
               setState(() {
                 db.todoList.add([_controller.text, false, selectedTime]);
               });
-              scheduleTodoNotification(id: db.todoList.length - 1, title: 'You have a task due', body: _controller.text, dueDate: selectedTime);
-              Navigator.of(context).pop();
               db.updateToDo();
+
+              // ✅ Schedule with the exact new index (which is length - 1)
+              scheduleTodoNotification(
+                id: db.todoList.length - 1, 
+                title: 'You have a task due', 
+                body: _controller.text, 
+                dueDate: selectedTime,
+              );
+              Navigator.of(context).pop();
             }
           },
           onCancel: () {
@@ -80,6 +103,7 @@ class _ToDoPageState extends State<ToDoPage> {
     );
   }
 
+  // 3. Editing a task
   void editTask(int index) {
     _controller.text = db.todoList[index][0];
 
@@ -95,9 +119,16 @@ class _ToDoPageState extends State<ToDoPage> {
                 db.todoList[index][0] = _controller.text;
                 db.todoList[index][2] = selectedTime;
               });
-              scheduleTodoNotification(id: db.todoList.length - 1, title: 'You have a task due', body: _controller.text, dueDate: selectedTime);
-              Navigator.of(context).pop();
               db.updateToDo();
+
+              // ✅ Correctly overwrite the notification at THIS specific index
+              scheduleTodoNotification(
+                id: index, // Fix: Use 'index' instead of 'length - 1'
+                title: 'You have a task due', 
+                body: _controller.text, 
+                dueDate: selectedTime,
+              );
+              Navigator.of(context).pop();
             }
           },
           onCancel: () {
@@ -109,13 +140,22 @@ class _ToDoPageState extends State<ToDoPage> {
     );
   }
 
+  // 4. Deleting a task
   void deleteTask(int index) {
+    // ✅ Cancel the active system notification before deleting from database!
+    flutterLocalNotificationsPlugin.cancel(id: index);
+
     setState(() {
       db.todoList.removeAt(index);
     });
     db.updateToDo();
+
+    // Since index positions changed, we need to reschedule subsequent notifications 
+    // so they align with their new database index positions.
+    _rescheduleAllNotifications();
   }
 
+  // 5. Reordering tasks
   void reorderTasks(int oldIndex, int newIndex) {
     setState(() {
       if (newIndex > oldIndex) {
@@ -125,6 +165,28 @@ class _ToDoPageState extends State<ToDoPage> {
       db.todoList.insert(newIndex, item);
     });
     db.updateToDo();
+
+    // Since positions swapped, reset and realign notifications to new indexes
+    _rescheduleAllNotifications();
+  }
+
+  // 💡 Helper to keep notifications perfectly in sync with your list order
+  Future<void> _rescheduleAllNotifications() async {
+    // Cancel all current notifications
+    await flutterLocalNotificationsPlugin.cancelAll();
+
+    // Re-schedule outstanding active tasks with their brand-new index IDs
+    for (int i = 0; i < db.todoList.length; i++) {
+      final bool isCompleted = db.todoList[i][1];
+      if (!isCompleted) {
+        scheduleTodoNotification(
+          id: i,
+          title: 'You have a task due',
+          body: db.todoList[i][0],
+          dueDate: db.todoList[i][2],
+        );
+      }
+    }
   }
 
   @override
