@@ -16,7 +16,6 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPageState extends State<ToDoPage> {
-  // Reference the hive box
   final _myBox = Hive.box('MyBox');
 
   ToDoDataBase db = ToDoDataBase();
@@ -26,7 +25,6 @@ class _ToDoPageState extends State<ToDoPage> {
   void initState() {
     super.initState();
 
-    // 0 = Daily, 1 = Long-term (Upcoming Horizon)
     if (widget.pageId == 0) {
       if (_myBox.get('TODOLIST') == null) {
         db.createInitialDaily();
@@ -42,7 +40,6 @@ class _ToDoPageState extends State<ToDoPage> {
     }
   }
 
-  // 1. Upon tapping the checkbox, handle notification scheduling/cancelling
   void checkBoxChanged(bool? value, int index) {
     if (widget.pageId == 0) {
       setState(() {
@@ -81,7 +78,6 @@ class _ToDoPageState extends State<ToDoPage> {
     }
   }
 
-  // 2. Creating a task
   void createNewTask() {
     final DateTime freshCurrentTime = DateTime(
       DateTime.now().year,
@@ -100,7 +96,6 @@ class _ToDoPageState extends State<ToDoPage> {
           currentTime: freshCurrentTime,
           onSave: (selectedTime) {
             if (_controller.text.isNotEmpty) {
-              // Generate standard 32-bit unique ID
               int uniqueId = DateTime.now().millisecondsSinceEpoch.remainder(
                 10000000,
               );
@@ -153,7 +148,6 @@ class _ToDoPageState extends State<ToDoPage> {
     );
   }
 
-  // 3. Editing a task
   void editTask(int index) {
     if (widget.pageId == 0) {
       _controller.text = db.todoList[index][0];
@@ -213,7 +207,6 @@ class _ToDoPageState extends State<ToDoPage> {
     );
   }
 
-  // 4. Deleting a task
   void deleteTask(int index) {
     if (widget.pageId == 0) {
       final int taskId = db.todoList[index][3];
@@ -232,7 +225,6 @@ class _ToDoPageState extends State<ToDoPage> {
     }
   }
 
-  // 5. Reordering tasks
   void reorderTasks(int oldIndex, int newIndex) {
     if (widget.pageId == 0) {
       setState(() {

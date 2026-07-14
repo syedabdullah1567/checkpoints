@@ -7,21 +7,16 @@ import 'package:checkpoints/pages/homepage.dart';
 import 'package:checkpoints/pages/notifications.dart';
 
 void main() async {
-  try {
-    // Ensure bindings are initialized before calling async code
-    WidgetsFlutterBinding.ensureInitialized();
+  // Ensure bindings are initialized before calling async code
+  WidgetsFlutterBinding.ensureInitialized();
 
-    await Hive.initFlutter();
-    // ignore: unused_local_variable
-    var box = await Hive.openBox('MyBox');
+  await Hive.initFlutter();
+  // ignore: unused_local_variable
+  var box = await Hive.openBox('MyBox');
 
-    NotifyTasks().initNotification();
+  NotifyTasks().initNotification();
 
-    runApp(const MyApp());
-  } catch (e, stacktrace) {
-    print("❌ CRITICAL INITIALIZATION ERROR: $e");
-    print(stacktrace);
-  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
