@@ -1,4 +1,4 @@
-import 'package:checkpoints/dark_mode_switcher.dart';
+import 'package:checkpoints/utilities/dark_mode_switcher.dart';
 import 'package:checkpoints/data/database.dart';
 import 'package:checkpoints/utilities/input_box.dart';
 import 'package:checkpoints/utilities/todo_tile.dart';

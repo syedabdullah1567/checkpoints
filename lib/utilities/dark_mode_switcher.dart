@@ -1,4 +1,4 @@
-import 'package:checkpoints/value_notifier.dart';
+import 'package:checkpoints/utilities/value_notifier.dart';
 import 'package:flutter/material.dart';
 
 class DarkModeSwitcher extends StatelessWidget {
