@@ -1,6 +1,6 @@
 //import 'package:dynamic_color/dynamic_color.dart';
 import 'package:checkpoints/pages/notifications.dart';
-import 'package:checkpoints/value_notifier.dart';
+import 'package:checkpoints/utilities/value_notifier.dart';
 import 'package:checkpoints/pages/homepage_checkpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
