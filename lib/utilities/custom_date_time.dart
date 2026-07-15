@@ -14,10 +14,12 @@ class DateTimePickerBanner extends StatelessWidget {
   Future<void> _pickDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: currentTime.add(Duration(days: 1)),
-      firstDate: currentTime.add(Duration(days: 1)),
+      initialDate: currentTime,
+      firstDate: currentTime,
       lastDate: DateTime(DateTime.now().year + 1),
     );
+
+    print(TimeOfDay.fromDateTime(currentTime).format(context));
 
     if (pickedDate != null) {
       final TimeOfDay? pickedTime = await showTimePicker(
