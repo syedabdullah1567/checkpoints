@@ -1,3 +1,4 @@
+import 'package:checkpoints/dark_mode_switcher.dart';
 import 'package:checkpoints/data/database.dart';
 import 'package:checkpoints/utilities/input_box.dart';
 import 'package:checkpoints/utilities/todo_tile.dart';
@@ -250,7 +251,7 @@ class _ToDoPageState extends State<ToDoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      //backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: widget.pageId == 0
             ? Column(
@@ -262,7 +263,11 @@ class _ToDoPageState extends State<ToDoPage> {
                   ),
                   Text(
                     DateFormat('MMMM d, yyyy').format(DateTime.now()),
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -271,8 +276,9 @@ class _ToDoPageState extends State<ToDoPage> {
                 'Upcoming Horizon',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+        actions: [DarkModeSwitcher()],
         elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         centerTitle: true,
       ),

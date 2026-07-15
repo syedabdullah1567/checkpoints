@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:checkpoints/pages/tasks.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class HomepageCheckpoints extends StatefulWidget {
+  const HomepageCheckpoints({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<HomepageCheckpoints> createState() => _HomepageCheckpointsState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageCheckpointsState extends State<HomepageCheckpoints> {
   int currentIndex = 0;
   final List<Widget> _screens = [
     const ToDoPage(pageId: 0),
