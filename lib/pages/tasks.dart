@@ -26,19 +26,32 @@ class _ToDoPageState extends State<ToDoPage> {
   void initState() {
     super.initState();
 
-    if (widget.pageId == 0) {
-      if (_myBox.get('TODOLIST') == null) {
-        db.createInitialDaily();
-      } else {
-        db.loadToDo();
-      }
+    // 1. First, make sure BOTH lists are initialized in Hive with defaults if they don't exist
+    if (_myBox.get('TODOLIST') == null) {
+      db.createInitialDaily();
+      db.updateToDo(); // Save the default tasks immediately
     } else {
-      if (_myBox.get('LONGTERM') == null) {
-        db.createInitialLongTerm();
-      } else {
-        db.loadLongTerm();
-      }
+      db.loadToDo();
     }
+
+    if (_myBox.get('LONGTERM') == null) {
+      db.createInitialLongTerm();
+      db.updateLongTerm(); // Save the empty list immediately
+    } else {
+      db.loadLongTerm();
+    }
+
+    // 2. Now that we are guaranteed to have valid data in memory,
+    // we can safely run our migration logic.
+    _syncTasks();
+  }
+
+  void _syncTasks() {
+    setState(() {
+      db.loadToDo();
+      db.loadLongTerm();
+      db.moveLongtermToDaily(); // This handles moving and saving automatically
+    });
   }
 
   void checkBoxChanged(bool? value, int index) {
