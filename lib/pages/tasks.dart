@@ -107,7 +107,9 @@ class _ToDoPageState extends State<ToDoPage> {
 
         return InputBox(
           controller: _controller,
-          currentTime: freshCurrentTime,
+          currentTime: widget.pageId == 0
+              ? freshCurrentTime
+              : freshCurrentTime.add(Duration(days: 1)),
           onSave: (selectedTime) {
             if (_controller.text.isNotEmpty) {
               int uniqueId = DateTime.now().millisecondsSinceEpoch.remainder(
